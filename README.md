@@ -1,7 +1,8 @@
 ## Redirector Server with Google Sheets
 
-This is a simple web server that can redirect a pre-defined
-set of URLs in Google Sheets, such as:
+This is a simple web server that can redirect a pre-defined set of URLs in
+Google Sheets. All you need to do is define a [Google Sheets][ex] like the
+following, and deploy a simple app just by clicking around.
 
 | shortcut | url |
 |----|---|
@@ -9,9 +10,11 @@ set of URLs in Google Sheets, such as:
 | `book` | `https://docs.google.com/forms/d/e/1FAIpQLSefArw8NWiha6YCaoTccGZmo4QvuDYY4s87Y_tjW6h4al_4NQ/viewform` |
 | `yt` | `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
-It can be deployed to [Google Cloud Run](https://cloud.run)
-and run **free of charge** on its generous free tier (+Google
-Sheets is free as well).
+**Costs:** This can be deployed to [Google Cloud Run](https://cloud.run) and run
+for **free** thanks to [generous free tier][free tier] (+Google Sheets is free
+with a Gmail account as well).
+
+[free tier]: https://cloud.google.com/run/pricing
 
 This redirector also supports path additions on top of base URLs, for example,
 with the sheet row:
