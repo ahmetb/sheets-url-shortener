@@ -1,0 +1,13 @@
+{
+    "env": {
+        "GOOGLE_SHEET_ID":{
+            "descriptive": "Provide your Sheet ID string",
+            "required": true
+        }
+    },
+    "hooks":{
+        "postcreate": {
+            "commands": ["./postdeploy.sh"]
+        }
+    }
+}
