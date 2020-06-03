@@ -1,4 +1,4 @@
-## Redirector Server with Google Sheets
+## URL Shortener with a Google Spreadsheet 📑
 
 This is a simple web server that can redirect a pre-defined set of URLs in
 Google Sheets. All you need to do is define a [Google Sheets][ex] like the
@@ -33,7 +33,6 @@ The `go.ahmet.dev/gcp/golang-samples` will be redirected to
 1. Add two columns, first column is the "shortcut", the second
    column is the "url" to redirect the user. ([see example][ex])
 
-
 1. Save the ID of your Sheet from the URL (it’s a random string
    that looks like `1SMeoyesCaGHRlYdGj9VyqD-qhXtab1jrcgHZ0irvNDs`).
 
@@ -43,7 +42,7 @@ The `go.ahmet.dev/gcp/golang-samples` will be redirected to
    [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run)
 
 1. Go to https://console.cloud.google.com/run, click on
-   `serverless-url-shortener` service. Find the email address written in the
+   `sheets-url-shortener` service. Find the email address written in the
    "Service Account" section.
 
 1. Go to your Google Sheets, click "Share" and give this email
@@ -51,7 +50,7 @@ The `go.ahmet.dev/gcp/golang-samples` will be redirected to
 
 1. (Optional) If you want to use a custom domain like `go.ahmet.dev`, go to
    https://console.cloud.google.com/run/domains and map the
-   `serverless-url-shortener` to your custom domain!
+   `sheets-url-shortener` to your custom domain!
 
 ## Advanced Configuration
 
