@@ -5,13 +5,23 @@ set of URLs in Google Sheets, such as:
 
 | shortcut | url |
 |----|---|
-| `gh` | `https://github.com/ahmetb/` |
+| `code` | `https://github.com/ahmetb/` |
 | `book` | `https://docs.google.com/forms/d/e/1FAIpQLSefArw8NWiha6YCaoTccGZmo4QvuDYY4s87Y_tjW6h4al_4NQ/viewform` |
-| `yt` | `https://
+| `yt` | `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
 It can be deployed to [Google Cloud Run](https://cloud.run)
 and run **free of charge** on its generous free tier (+Google
 Sheets is free as well).
+
+This redirector also supports path additions on top of base URLs, for example,
+with the sheet row:
+
+| shortcut | url |
+|----|---|
+| `gcp` | `https://github.com/GoogleCloudPlatform` |
+
+The `go.ahmet.dev/gcp/golang-samples` will be redirected to
+`https://github.com/GoogleCloudPlatform/golang-samples`.
 
 ## Setup
 
