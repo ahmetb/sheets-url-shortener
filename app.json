@@ -1,7 +1,7 @@
 {
     "env": {
         "GOOGLE_SHEET_ID":{
-            "descriptive": "Provide your Sheet ID string",
+            "description": "Provide your Sheet ID string",
             "required": true
         }
     },
