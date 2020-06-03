@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-	log.Println("--------------------")
 	port, addr := os.Getenv("PORT"), os.Getenv("LISTEN_ADDR")
 	if port == "" {
 		port = "8080"
@@ -53,8 +52,7 @@ func main() {
 }
 
 type server struct {
-	db *cachedURLMap
-
+	db           *cachedURLMap
 	homeRedirect string
 }
 
@@ -131,6 +129,7 @@ func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
 	}
 	if redirTo == nil {
 		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "404 not found")
 		return
 	}
 
