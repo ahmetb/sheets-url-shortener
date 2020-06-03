@@ -97,6 +97,10 @@ func (c *cachedURLMap) refresh() error {
 }
 
 func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
+	if req.Body != nil {
+		defer req.Body.Close()
+	}
+
 	redirTo, err := s.findRedirect(req.URL)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to find redirect: %v", err)
