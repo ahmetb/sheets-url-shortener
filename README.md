@@ -50,6 +50,18 @@ The `go.ahmet.dev/gcp/golang-samples` will be redirected to
    https://console.cloud.google.com/run/domains and map the
    `serverless-url-shortener` to your custom domain!
 
+## Advanced Configuration
+
+This server can be configured with these following parameters:
+
+| Environment Variable | Description |
+|-----|------|
+| `SHEET_NAME` | (optional) If you have multiple sheets in a spreadsheet, specify the sheet name. |
+| `CACHE_TTL` | (optional) how frequently the spreadsheet must be reloaded (default: `5s`) |
+| `HOME_REDIRECT` | (optional) which url to redirect when root url (`/`) is visited
+| `LISTEN_ADDR` | (optional) which network address to listen on (default `""` which means all interfaces) |
+| `PORT` | (optional) http port to listen on (default `8080`).
+
 ## Disclaimer
 
 This is not an official Google project. It's distributed as-is under Apache 2.0

@@ -21,6 +21,7 @@ func main() {
 
 	googleSheetsID := os.Getenv("GOOGLE_SHEET_ID")
 	sheetName := os.Getenv("SHEET_NAME")
+	homeRedirect := os.Getenv("HOME_REDIRECT")
 
 	ttlVal := os.Getenv("CACHE_TTL")
 	ttl := time.Second * 5
@@ -40,9 +41,10 @@ func main() {
 				sheetName:      sheetName,
 			},
 		},
+		homeRedirect: homeRedirect,
 	}
 
-	http.HandleFunc("/", srv.redirect)
+	http.HandleFunc("/", srv.handler)
 
 	listenAddr := net.JoinHostPort(addr, port)
 	log.Printf("starting server at %s; ttl=%v", listenAddr, ttl)
@@ -52,6 +54,8 @@ func main() {
 
 type server struct {
 	db *cachedURLMap
+
+	homeRedirect string
 }
 
 type URLMap map[string]*url.URL
@@ -92,7 +96,30 @@ func (c *cachedURLMap) refresh() error {
 	return nil
 }
 
+func (s *server) handler(w http.ResponseWriter, req *http.Request) {
+	if req.URL.Path == "/" {
+		s.home(w, req)
+		return
+	}
+	s.redirect(w, req)
+}
+
+func (s *server) home(w http.ResponseWriter, req *http.Request) {
+	if s.homeRedirect != "" {
+		http.Redirect(w, req, s.homeRedirect, http.StatusMovedPermanently)
+		return
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+	fmt.Fprintf(w, `<!DOCTYPE html>
+	<html><head><title>Not found</title></head><body><h1>Not found :(</h1>
+	<p>This is home page for a URL redirector service.</p>
+	<p>The URL is missing the shortcut in the path.</p>
+	</body></html>`)
+}
+
 func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
+
 	if req.Body != nil {
 		defer req.Body.Close()
 	}
