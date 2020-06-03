@@ -7,6 +7,7 @@ set of URLs in Google Sheets, such as:
 |----|---|
 | `gh` | `https://github.com/ahmetb/` |
 | `book` | `https://docs.google.com/forms/d/e/1FAIpQLSefArw8NWiha6YCaoTccGZmo4QvuDYY4s87Y_tjW6h4al_4NQ/viewform` |
+| `yt` | `https://
 
 It can be deployed to [Google Cloud Run](https://cloud.run)
 and run **free of charge** on its generous free tier (+Google
@@ -17,7 +18,8 @@ Sheets is free as well).
 1. Create a new **Google Sheet**: https://sheets.new.
 
 1. Add two columns, first column is the "shortcut", the second
-   column is the "url" to redirect the user. ([see example](#))
+   column is the "url" to redirect the user. ([see example][ex])
+
 
 1. Save the ID of your Sheet from the URL (it’s a random string
    that looks like `1SMeoyesCaGHRlYdGj9VyqD-qhXtab1jrcgHZ0irvNDs`).
@@ -37,3 +39,10 @@ Sheets is free as well).
 1. (Optional) If you want to use a custom domain like `go.ahmet.dev`, go to
    https://console.cloud.google.com/run/domains and map the
    `serverless-url-shortener` to your custom domain!
+
+## Disclaimer
+
+This is not an official Google project. It's distributed as-is under Apache 2.0
+License. See [LICENSE](./LICENSE).
+
+[ex]: https://docs.google.com/spreadsheets/d/1wCcj0Y4wFUHGAY0DmyefFlQ3s1DR8aUTz9seykM2iJ8/edit?usp=sharing
