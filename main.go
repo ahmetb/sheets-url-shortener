@@ -18,10 +18,6 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	if addr == "" {
-		addr = "localhost"
-
-	}
 
 	googleSheetsID := os.Getenv("GOOGLE_SHEET_ID")
 	sheetName := os.Getenv("SHEET_NAME")
