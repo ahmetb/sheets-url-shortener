@@ -3,6 +3,14 @@
         "GOOGLE_SHEET_ID":{
             "description": "Provide your Sheet ID string",
             "required": true
+        },
+        "ORDER_MINUS_10":{
+            "required": true,
+            "order": -10,
+        },
+        "ORDER_10":{
+            "required": true,
+            "order": 10,
         }
     },
     "hooks":{
