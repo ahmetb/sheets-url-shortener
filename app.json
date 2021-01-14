@@ -6,11 +6,11 @@
         },
         "ORDER_MINUS_10":{
             "required": true,
-            "order": -10,
+            "order": -10
         },
         "ORDER_10":{
             "required": true,
-            "order": 10,
+            "order": 10
         }
     },
     "hooks":{
