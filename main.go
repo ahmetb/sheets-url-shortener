@@ -104,7 +104,7 @@ func (s *server) handler(w http.ResponseWriter, req *http.Request) {
 
 func (s *server) home(w http.ResponseWriter, req *http.Request) {
 	if s.homeRedirect != "" {
-		http.Redirect(w, req, s.homeRedirect, http.StatusMovedPermanently)
+		http.Redirect(w, req, s.homeRedirect, http.StatusFound)
 		return
 	}
 
