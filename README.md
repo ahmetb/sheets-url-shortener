@@ -48,6 +48,9 @@ The `go.ahmet.dev/gcp/golang-samples` will be redirected to
 1. Go to your Google Sheets, click "Share" and give this email
    address "Viewer" access on your sheet.
 
+1. Go to https://console.developers.google.com/apis/api/sheets.googleapis.com/overview
+   and make sure the Google Sheets API is enabled.
+
 1. (Optional) If you want to use a custom domain like `go.ahmet.dev`, go to
    https://console.cloud.google.com/run/domains and map the
    `sheets-url-shortener` to your custom domain!
