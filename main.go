@@ -83,8 +83,6 @@ func (c *cachedURLMap) refresh() error {
 		return nil
 	}
 
-	time.Sleep(time.Second * 3)
-
 	rows, err := c.sheet.Query()
 	if err != nil {
 		return err
