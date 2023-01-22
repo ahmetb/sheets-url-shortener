@@ -206,7 +206,7 @@ func urlMap(in [][]interface{}) URLMap {
 		if !ok || v == "" {
 			continue
 		}
-		h, ok := row[3].(string)
+		h, ok := row[2].(string)
 		if !ok || v == "" {
 			continue
 		}
