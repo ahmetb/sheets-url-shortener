@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sync"
 
 	"google.golang.org/api/sheets/v4"
 )
 
 type sheetsProvider struct {
+	sync.RWMutex
 	client         *sheets.Service
 	googleSheetsID string
 	sheetName      string
@@ -41,17 +43,17 @@ func (s *sheetsProvider) Query() ([][]interface{}, error) {
 	return resp.Values, nil
 }
 
-// Write will write the value in the column of the row indicated.
-func (s *sheetsProvider) Write(column string, rowIndex int, value string) error {
-	log.Printf("writing %s to row %v", value, rowIndex)
+// Write will write the values rowwise, starting at the given column and row index.
+func (s *sheetsProvider) Write(column string, rowIndex int, values []interface{}) error {
+	s.Lock()
+	defer s.Unlock()
+	log.Printf("writing %s to row %v", values, rowIndex)
 	writeRange := fmt.Sprintf("%s%d", column, rowIndex)
 	if s.sheetName != "" {
 		writeRange = s.sheetName + "!" + writeRange
 	}
 	_, err := s.client.Spreadsheets.Values.Update(s.googleSheetsID, writeRange, &sheets.ValueRange{
-		Values: [][]interface{}{
-			{value},
-		},
+		Values: [][]interface{}{values},
 	}).ValueInputOption("USER_ENTERED").Do()
 	if err != nil {
 		return fmt.Errorf("unable to write data to sheet: %v", err)
