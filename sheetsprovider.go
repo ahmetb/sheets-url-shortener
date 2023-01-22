@@ -29,7 +29,7 @@ func (s *sheetsProvider) Init() error {
 
 func (s *sheetsProvider) Query() ([][]interface{}, error) {
 	log.Println("querying sheet")
-	readRange := "A:B"
+	readRange := "A:D"
 	if s.sheetName != "" {
 		readRange = s.sheetName + "!" + readRange
 	}
