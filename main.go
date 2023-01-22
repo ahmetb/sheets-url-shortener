@@ -206,9 +206,17 @@ func urlMap(in [][]interface{}) URLMap {
 		if !ok || v == "" {
 			continue
 		}
-		h, ok := row[2].(string)
-		if !ok || v == "" {
-			continue
+		hitCount := 0
+		if len(row) >= 3 {
+			h, ok := row[2].(string)
+			if !ok || v == "" {
+				continue
+			}
+			hc, err := strconv.Atoi(h)
+			if err != nil {
+				log.Printf("warn: %s=%s hitCount invalid", k, h)
+			}
+			hitCount = hc
 		}
 
 		k = strings.ToLower(k)
@@ -217,17 +225,12 @@ func urlMap(in [][]interface{}) URLMap {
 			log.Printf("warn: %s=%s url invalid", k, v)
 			continue
 		}
-		hitCount, err := strconv.Atoi(h)
-		if err != nil {
-			log.Printf("warn: %s=%s hitCount invalid", k, h)
-			continue
-		}
 
 		_, exists := out[k]
 		if exists {
 			log.Printf("warn: shortcut %q redeclared, overwriting", k)
 		}
-		out[k] = &mapData{u, hitCount, i}
+		out[k] = &mapData{u, hitCount, i + 1}
 	}
 	return out
 }
