@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -32,14 +33,19 @@ func main() {
 		ttl = v
 	}
 
-	srv := &server{
-		db: &cachedURLMap{
-			ttl: ttl,
-			sheet: &sheetsProvider{
-				googleSheetsID: googleSheetsID,
-				sheetName:      sheetName,
-			},
+	urlMap := &cachedURLMap{
+		ttl: ttl,
+		sheet: &sheetsProvider{
+			googleSheetsID: googleSheetsID,
+			sheetName:      sheetName,
 		},
+	}
+	if err := urlMap.Init(); err != nil {
+		log.Fatalf("failed to initialize url map: %v", err)
+	}
+
+	srv := &server{
+		db:           urlMap,
 		homeRedirect: homeRedirect,
 	}
 
@@ -56,7 +62,13 @@ type server struct {
 	homeRedirect string
 }
 
-type URLMap map[string]*url.URL
+type mapData struct {
+	url      *url.URL
+	hitCount int
+	rowIndex int
+}
+
+type URLMap map[string]*mapData
 
 type cachedURLMap struct {
 	sync.RWMutex
@@ -67,7 +79,14 @@ type cachedURLMap struct {
 	sheet *sheetsProvider
 }
 
-func (c *cachedURLMap) Get(query string) (*url.URL, error) {
+func (c *cachedURLMap) Init() error {
+	if err := c.sheet.Init(); err != nil {
+		return fmt.Errorf("failed to initialize sheet: %v", err)
+	}
+	return nil
+}
+
+func (c *cachedURLMap) Get(query string) (*mapData, error) {
 	if err := c.refresh(); err != nil {
 		return nil, err
 	}
@@ -133,6 +152,7 @@ func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
 
 	log.Printf("redirecting=%q to=%q", req.URL, redirTo.String())
 	http.Redirect(w, req, redirTo.String(), http.StatusMovedPermanently)
+
 }
 
 func (s *server) findRedirect(req *url.URL) (*url.URL, error) {
@@ -147,7 +167,8 @@ func (s *server) findRedirect(req *url.URL) (*url.URL, error) {
 			return nil, err
 		}
 		if v != nil {
-			return prepRedirect(v, strings.Join(discard, "/"), req.Query()), nil
+			s.db.sheet.Write("C", v.rowIndex, strconv.Itoa(v.hitCount+1))
+			return prepRedirect(v.url, strings.Join(discard, "/"), req.Query()), nil
 		}
 		discard = append([]string{segments[len(segments)-1]}, discard...)
 		segments = segments[:len(segments)-1]
@@ -173,7 +194,7 @@ func prepRedirect(base *url.URL, addPath string, query url.Values) *url.URL {
 
 func urlMap(in [][]interface{}) URLMap {
 	out := make(URLMap)
-	for _, row := range in {
+	for i, row := range in {
 		if len(row) < 2 {
 			continue
 		}
@@ -185,6 +206,10 @@ func urlMap(in [][]interface{}) URLMap {
 		if !ok || v == "" {
 			continue
 		}
+		h, ok := row[3].(string)
+		if !ok || v == "" {
+			continue
+		}
 
 		k = strings.ToLower(k)
 		u, err := url.Parse(v)
@@ -192,12 +217,17 @@ func urlMap(in [][]interface{}) URLMap {
 			log.Printf("warn: %s=%s url invalid", k, v)
 			continue
 		}
+		hitCount, err := strconv.Atoi(h)
+		if err != nil {
+			log.Printf("warn: %s=%s hitCount invalid", k, h)
+			continue
+		}
 
 		_, exists := out[k]
 		if exists {
 			log.Printf("warn: shortcut %q redeclared, overwriting", k)
 		}
-		out[k] = u
+		out[k] = &mapData{u, hitCount, i}
 	}
 	return out
 }
