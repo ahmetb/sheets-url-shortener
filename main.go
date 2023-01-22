@@ -22,6 +22,7 @@ func main() {
 	googleSheetsID := os.Getenv("GOOGLE_SHEET_ID")
 	sheetName := os.Getenv("SHEET_NAME")
 	homeRedirect := os.Getenv("HOME_REDIRECT")
+	redirectStatus := os.Getenv("REDIRECT_STATUS")
 
 	ttlVal := os.Getenv("CACHE_TTL")
 	ttl := time.Second * 5
@@ -48,6 +49,15 @@ func main() {
 		db:           urlMap,
 		homeRedirect: homeRedirect,
 	}
+	if redirectStatus != "" {
+		s, err := strconv.Atoi(redirectStatus)
+		if err != nil {
+			log.Fatalf("failed to parse REDIRECT_STATUS as int: %v", err)
+		}
+		srv.redirectStatus = s
+	} else {
+		srv.redirectStatus = http.StatusMovedPermanently
+	}
 
 	http.HandleFunc("/", srv.handler)
 
@@ -58,8 +68,9 @@ func main() {
 }
 
 type server struct {
-	db           *cachedURLMap
-	homeRedirect string
+	db             *cachedURLMap
+	homeRedirect   string
+	redirectStatus int
 }
 
 type mapData struct {
@@ -151,7 +162,7 @@ func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
 	}
 
 	log.Printf("redirecting=%q to=%q", req.URL, redirTo.String())
-	http.Redirect(w, req, redirTo.String(), http.StatusMovedPermanently)
+	http.Redirect(w, req, redirTo.String(), s.redirectStatus)
 
 }
 

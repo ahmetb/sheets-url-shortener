@@ -66,6 +66,7 @@ This server can be configured with these following parameters:
 | `HOME_REDIRECT` | (optional) which url to redirect when root url (`/`) is visited
 | `LISTEN_ADDR` | (optional) which network address to listen on (default `""` which means all interfaces) |
 | `PORT` | (optional) http port to listen on (default `8080`).
+| `REDIRECT_STATUS` | (optional) HTTP status code to return upon redirect. (default `301`, Moved Permanently).
 
 ## Disclaimer
 
