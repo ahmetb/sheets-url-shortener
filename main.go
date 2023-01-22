@@ -168,6 +168,7 @@ func (s *server) findRedirect(req *url.URL) (*url.URL, error) {
 		}
 		if v != nil {
 			s.db.sheet.Write("C", v.rowIndex, strconv.Itoa(v.hitCount+1))
+			s.db.sheet.Write("D", v.rowIndex, time.Now().Format(time.RFC3339))
 			return prepRedirect(v.url, strings.Join(discard, "/"), req.Query()), nil
 		}
 		discard = append([]string{segments[len(segments)-1]}, discard...)
