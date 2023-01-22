@@ -136,7 +136,7 @@ func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *server) findRedirect(req *url.URL) (*url.URL, error) {
-	path := strings.TrimPrefix(req.Path, "/")
+	path := strings.TrimPrefix(strings.ToLower(req.Path), "/")
 
 	segments := strings.Split(path, "/")
 	var discard []string
