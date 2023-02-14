@@ -132,7 +132,7 @@ func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
 	}
 
 	log.Printf("redirecting=%q to=%q", req.URL, redirTo.String())
-	http.Redirect(w, req, redirTo.String(), http.StatusMovedPermanently)
+	http.Redirect(w, req, redirTo.String(), http.StatusFound) // no permanent redirects
 }
 
 func (s *server) findRedirect(req *url.URL) (*url.URL, error) {
