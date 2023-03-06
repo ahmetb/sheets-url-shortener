@@ -6,9 +6,10 @@ following, and deploy a simple app just by clicking around.
 
 | shortcut | url |
 |----|---|
-| `code` | `https://github.com/ahmetb/` |
-| `book` | `https://docs.google.com/forms/d/e/1FAIpQLSefArw8NWiha6YCaoTccGZmo4QvuDYY4s87Y_tjW6h4al_4NQ/viewform` |
+| `gh` | `https://github.com/ahmetb` |
 | `yt` | `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
+| `cv` | `https://docs.google.com/document/d/1c97PrqTFqiMpannv2/edit` |
+| `cv` | `/resume` |
 
 **Costs:** This can be deployed to [Google Cloud Run](https://cloud.run) and run
 for **free** thanks to [generous free tier][free tier] (+Google Sheets is free
