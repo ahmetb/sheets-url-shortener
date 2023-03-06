@@ -9,7 +9,7 @@ following, and deploy a simple app just by clicking around.
 | `gh` | `https://github.com/ahmetb` |
 | `yt` | `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 | `cv` | `https://docs.google.com/document/d/1c97PrqTFqiMpannv2/edit` |
-| `cv` | `/resume` |
+| `resume` | `/cv` |
 
 **Costs:** This can be deployed to [Google Cloud Run](https://cloud.run) and run
 for **free** thanks to [generous free tier][free tier] (+Google Sheets is free
