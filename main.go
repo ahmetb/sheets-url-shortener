@@ -106,12 +106,7 @@ func (s *server) home(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprintf(w, `<!DOCTYPE html>
-	<html><head><title>Not found</title></head><body><h1>Not found :(</h1>
-	<p>This is home page for a URL redirector service.</p>
-	<p>The URL is missing the shortcut in the path.</p>
-	</body></html>`)
+	http.Redirect(w, req, "https://www.aiesec.lk/page-not-found", http.StatusFound)
 }
 
 func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
