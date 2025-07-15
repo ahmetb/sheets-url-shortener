@@ -64,7 +64,8 @@ This server can be configured with these following parameters:
 |-----|------|
 | `SHEET_NAME` | (optional) If you have multiple sheets in a spreadsheet, specify the sheet name. |
 | `CACHE_TTL` | (optional) how frequently the spreadsheet must be reloaded (default: `5s`) |
-| `HOME_REDIRECT` | (optional) which url to redirect when root url (`/`) is visited
+| `HOME_REDIRECT` | (optional) which url to redirect when root url (`/`) is visited |
+| `NOTFOUND_REDIRECT` | (optional) which url to redirect when a page is not found |
 | `LISTEN_ADDR` | (optional) which network address to listen on (default `""` which means all interfaces) |
 | `PORT` | (optional) http port to listen on (default `8080`).
 

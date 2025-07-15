@@ -21,6 +21,7 @@ func main() {
 	googleSheetsID := os.Getenv("GOOGLE_SHEET_ID")
 	sheetName := os.Getenv("SHEET_NAME")
 	homeRedirect := os.Getenv("HOME_REDIRECT")
+	notFoundRedirect := os.Getenv("NOTFOUND_REDIRECT")
 
 	ttlVal := os.Getenv("CACHE_TTL")
 	ttl := time.Second * 5
@@ -41,6 +42,7 @@ func main() {
 			},
 		},
 		homeRedirect: homeRedirect,
+		notFoundRedirect: notFoundRedirect,
 	}
 
 	http.HandleFunc("/", srv.handler)
@@ -54,6 +56,7 @@ func main() {
 type server struct {
 	db           *cachedURLMap
 	homeRedirect string
+	notFoundRedirect string
 }
 
 type URLMap map[string]*url.URL
@@ -106,6 +109,11 @@ func (s *server) home(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	if s.notFoundRedirect != "" {
+		http.Redirect(w, req, s.notFoundRedirect, http.StatusFound) // Redirect to a custom not found page instead
+		return
+	}
+
 	w.WriteHeader(http.StatusNotFound)
 	fmt.Fprintf(w, `<!DOCTYPE html>
 	<html><head><title>Not found</title></head><body><h1>Not found :(</h1>
@@ -125,10 +133,16 @@ func (s *server) redirect(w http.ResponseWriter, req *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to find redirect: %v", err)
 		return
 	}
+
 	if redirTo == nil {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "404 not found")
-		return
+		if s.notFoundRedirect != "" {
+			http.Redirect(w, req, s.notFoundRedirect, http.StatusFound) // Redirect to a custom not found page instead
+			return
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprintf(w, "404 not found")
+			return
+		}
 	}
 
 	log.Printf("redirecting=%q to=%q", req.URL, redirTo.String())
